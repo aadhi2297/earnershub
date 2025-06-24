@@ -1,23 +1,24 @@
-# Python junk
+# Ignore all files in data/ folder except review_data.csv
+data/*
+!data/raw/
+!data/raw/review_data.csv
+
+# Ignore virtual environments
+venv/
+env/
+.venv/
+
+# Ignore Python cache and logs
 __pycache__/
 *.pyc
-.venv/
-env/
+*.pyo
+*.log
 
-# Streamlit logs and config
-.streamlit/
-
-# Data files (if sensitive or big)
-data/
-
-# System files
-Thumbs.db
-desktop.ini
-
-# VSCode / IDE files
+# Ignore VSCode and system files
 .vscode/
-.idea/
+.DS_Store
+Thumbs.db
 
-# OS or accidental folders
-Git/
-
+# Ignore Streamlit config and temp
+.streamlit/secrets.toml
+.streamlit/config.toml
