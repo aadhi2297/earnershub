@@ -1,0 +1,6 @@
+sources_file = 'data/raw/earning_sources.csv'
+
+if os.path.exists(sources_file):
+    sources_data = pd.read_csv(sources_file)
+else:
+    sources_data = pd.DataFrame(columns=["Date", "Name", "Type", "Link", "Submitted_By", "Trust_Status"])
