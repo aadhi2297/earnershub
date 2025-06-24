@@ -1,6 +1,8 @@
-sources_file = 'data/raw/earning_sources.csv'
-
-if os.path.exists(sources_file):
-    sources_data = pd.read_csv(sources_file)
-else:
-    sources_data = pd.DataFrame(columns=["Date", "Name", "Type", "Link", "Submitted_By", "Trust_Status"])
+Date,Name,Type,Link,Submitted_By,Trust_Status
+2024-06-20,Money Tricks,YouTube,https://youtube.com/moneytricks,Aadhi,Trusted
+2024-06-21,Earning Hub,Telegram,https://t.me/earninghub,Aadhi,Trusted
+2024-06-22,QuickPay App,App,https://quickpay.app,Aadhi,Medium
+2024-06-23,Daily Payout,Website,https://dailypayouts.com,Shankar,Trusted
+2024-06-24,Side Hustle Ideas,YouTube,https://youtube.com/sidehustleideas,Shankar,Trusted
+2024-06-24,Earn Big Today,Website,https://earnbigtoday.com,Aadhi,Risky
+2024-06-25,CashRewards App,App,https://cashrewards.app,Aadhi,Trusted
