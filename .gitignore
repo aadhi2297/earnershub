@@ -1,1 +1,23 @@
-Git/ 
+# Python junk
+__pycache__/
+*.pyc
+.venv/
+env/
+
+# Streamlit logs and config
+.streamlit/
+
+# Data files (if sensitive or big)
+data/
+
+# System files
+Thumbs.db
+desktop.ini
+
+# VSCode / IDE files
+.vscode/
+.idea/
+
+# OS or accidental folders
+Git/
+

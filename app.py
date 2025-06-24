@@ -7,15 +7,19 @@ import os
 import plotly.express as px
 
 # Set page config
-st.set_page_config(page_title="💸 EarnersHub — Review Analyzer", page_icon="💸", layout="centered")
+st.set_page_config(
+    page_title="💸 EarnersHub — Review Analyzer",
+    page_icon="💸",
+    layout="centered"
+)
 
 # Title
 st.title("💸 EarnersHub — Earning App Reviews Platform")
 
-# CSV file
-csv_file = 'review_data.csv'
+# CSV file path
+csv_file = 'data/raw/review_data.csv'
 
-# Load or initialize data
+# Load or initialize review data
 if os.path.exists(csv_file):
     data = pd.read_csv(csv_file)
 else:
@@ -23,17 +27,17 @@ else:
 
 # Train model if data exists
 if not data.empty:
-    X = data['Review']
-    y = data['Sentiment']
-
-    vectorizer = CountVectorizer()
-    X_vectorized = vectorizer.fit_transform(X)
-
-    model = MultinomialNB()
-    model.fit(X_vectorized, y)
+    with st.spinner("🔍 Training ML model..."):
+        X = data['Review']
+        y = data['Sentiment']
+        vectorizer = CountVectorizer()
+        X_vectorized = vectorizer.fit_transform(X)
+        model = MultinomialNB()
+        model.fit(X_vectorized, y)
 
 # Sidebar menu
 with st.sidebar:
+    st.image("assets/logo.png", width=150)
     st.title("📖 Menu")
     option = st.radio("Choose an option:", (
         "📝 Submit a Review",
@@ -45,18 +49,16 @@ with st.sidebar:
 # 📝 Submit a Review
 if option == "📝 Submit a Review":
     st.header("📝 Submit a New Review")
-
     user_review = st.text_area("✍️ Write your review here:")
 
     if st.button("🚀 Analyze & Save"):
         if user_review.strip() == "":
             st.warning("⚠️ Please write a review first.")
         elif data.empty:
-            st.error("❌ Not enough data to train model. Add a few reviews first.")
+            st.error("❌ Not enough data to train model. Add a few demo reviews first.")
         else:
             review_vector = vectorizer.transform([user_review])
             prediction = model.predict(review_vector)[0]
-
             st.success(f"✅ Sentiment: **{prediction.upper()}**")
 
             today = datetime.now().strftime("%Y-%m-%d")
@@ -76,7 +78,6 @@ elif option == "📋 View Reviews":
 # 📊 Check Credibility
 elif option == "📊 Check App Credibility":
     st.header("📊 App Credibility Score")
-
     if not data.empty:
         positive_count = len(data[data['Sentiment'] == 'positive'])
         negative_count = len(data[data['Sentiment'] == 'negative'])
@@ -84,7 +85,6 @@ elif option == "📊 Check App Credibility":
 
         if total > 0:
             pos_percent = (positive_count / total) * 100
-            neg_percent = (negative_count / total) * 100
 
             # Status card
             st.subheader("📈 Current Credibility Status")
@@ -93,7 +93,7 @@ elif option == "📊 Check App Credibility":
             elif 40 <= pos_percent < 70:
                 st.warning("⚠️ RISKY App ⚠️")
             else:
-                st.error("❌ SCAM/Untrustworthy App ❌")
+                st.error("❌ SCAM / Untrustworthy App ❌")
 
             st.markdown("---")
 
@@ -103,11 +103,15 @@ elif option == "📊 Check App Credibility":
                 'Count': [positive_count, negative_count]
             })
 
-            fig = px.pie(chart_df, names='Sentiment', values='Count', color='Sentiment',
-                         color_discrete_map={'Positive': 'green', 'Negative': 'red'},
-                         title='📊 Review Sentiment Distribution')
+            fig = px.pie(
+                chart_df,
+                names='Sentiment',
+                values='Count',
+                color='Sentiment',
+                color_discrete_map={'Positive': 'green', 'Negative': 'red'},
+                title='📊 Review Sentiment Distribution'
+            )
             st.plotly_chart(fig, use_container_width=True)
-
         else:
             st.info("ℹ️ Not enough reviews yet to assess credibility.")
     else:
@@ -118,12 +122,11 @@ elif option == "ℹ️ About":
     st.header("ℹ️ About EarnersHub")
     st.write("""
         💸 **EarnersHub** lets users share and view reviews of online earning apps.  
-        It uses a **Naive Bayes ML model** trained on submitted reviews to classify them as **positive** or **negative**  
+        It uses a **Naive Bayes ML model** trained on submitted reviews to classify them as **positive** or **negative**,  
         and generates a credibility score for apps based on sentiment distribution.
 
         Built with ❤️ using **Streamlit**, **Scikit-learn**, and **Plotly**.
     """)
-
     st.markdown("**Developer:** Gubbala Adi Shankar ✌️")
 
 # Footer
